@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  nginx:
+    build:
+      context: ./docker/nginx/
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/project/:cached
+    ports:
+      - "8080:80"
+    networks:
+      - shared
+    depends_on:
+      - php
+    links:
+      - php
+
+  php:
+    build:
+      context: ./docker/php/
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/project/:cached
+    networks:
+      - shared
+
+networks:
+  shared:
+    name: symfony
